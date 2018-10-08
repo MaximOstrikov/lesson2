@@ -1,6 +1,9 @@
-let options = {started: false, initialX: 0, initialY: 0, x: 0, y: 0};
+let options = [{id: 0, started: false, initialX: 0, initialY: 0, x: 0, y: 0}];
+let idCount = 1;
+let elementId = 0;
 $(window).on('mousemove', function(e){
     if (options.started) {
+        console.log(elementId);
         $('.polpap').css("left", options.initialX + e.clientX - options.x + "px").css("top", options.initialY + e.clientY - options.y -80 + "px");
         if (e.clientX < options.x - options.initialX) {
             $('.polpap').css("left", 0 + "px");
@@ -14,7 +17,9 @@ $(window).on('mousemove', function(e){
         }
     }
 });
-$('.downpanel').on("mousedown", function (e) {
+$(document).on("mousedown", ".downpanel", function (e) {
+    elementId = $(this).context.id;
+    console.log(elementId);
     options.started = true;
     options.initialX = $('.polpap').offset().left;
     options.initialY = $('.polpap').offset().top;
@@ -28,9 +33,12 @@ $(window).on("mouseup focusout", function (e) {
 
 // add new element
 $('#btn').on('click', function () {
-    $('main').prepend('<div class="polpap">\n' +
-        '            <div class="downpanel">Control panel</div>\n' +
-        '         </div>')
+    $('main').append('<div class="polpap">\n' +
+        '            <div class="downpanel" id="' + idCount + '">Control panel</div>\n' +
+        '         </div>');
+    options[idCount] = {id: idCount, started: false, initialX: 0, initialY: 0, x: 0, y: 0};
+    console.log(options);
+    idCount++
 });
 
 
